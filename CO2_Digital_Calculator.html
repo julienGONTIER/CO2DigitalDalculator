@@ -1,0 +1,817 @@
+﻿<!DOCTYPE html>
+
+<html lang="fr" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="expires" content="Sun, 04 May 2020 00:00:01 GMT"/>
+<title>Mon Impact Environnemental numérique (en kg eq CO2)</title>
+<link rel="shortcut icon" href="favicon.gif?v1.0">
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<!--
+	CO2 Calculator by Decathlon - Julien Gontier - 2020
+	CO2 calculator of digital impact on entreprise
+	This calculator integrate CSS and JS to give the opportunity to host it on a wordpress page.
+	Images are hosted in a css sprite to avoid http transfer
+	Jquery is used to make the code easy to read (just the slim js file)
+	External Font is not mandatory
+-->
+
+<style>
+body{font-family: 'Roboto Condensed', sans-serif;padding-bottom:40px;}
+a:visited{color: #0A0A0A;}
+div{border:0px solid}
+h1{font-size: 30px;color:#0A0A0A;margin:5px 0 5px 0;}
+h2{font-size: 20px;font-weight: bold;color:#4D4D4D}
+h3{font-size: 18px;font-weight: bold; font-style: italic }
+.blackbold{font-weight: bold;}
+.bold{font-weight: bold; color: #bfffbf}
+.italic{font-style: italic;}
+.clear{clear: both;}
+.center{text-align: center;}
+.img_flag{height: 20px;}
+.hide{display: none;}
+#page{width:100%; margin: 0 auto;}
+#head{width: 1250px; height:94px;  z-index: 100;  background-color: white; padding-top:5px; margin: 0 auto;}
+#header_text{width: 1250px; min-height:50px;  z-index: 100;  background-color: white; padding-top:5px; margin: 0 auto;}
+#content{width: 1400px; height:880px; z-index: 100;margin:auto; background: url("Images/CO2_background.jpg") no-repeat scroll center 0px; }
+#footer{width: 1250px; height:540px; position: relative; left: 0; right: 0; z-index: 9999;  width: 1250px;  margin:auto;background-color: white;}
+#head_container{float: left;width: 100%}
+#logo{float: left;width: 40%;text-align: left;}
+#svg_logo{height: 40px;}
+#flag{float: right;width: 40%;text-align: right}
+#title{float: left;width: 100%;text-align: center;text-transform: uppercase; }
+#data{ position: relative; left: 0; right: 0; z-index: 9999;  width: 1250px;  margin:auto;}
+.section{width: 100%;padding-top:10px;}
+.calculate_part{width: 40%;}
+.input_part{float:left;padding-bottom: 20px;padding-left:20px;margin:0px 20px 20px 0;width: 720px;background-color: #D7D6DC;font-size:16px;}
+.box{float:left;padding-bottom: 20px;width:100px;margin-bottom:20px;margin-right:20px;background-color:#4D4D4D; text-align:center;color: #FEFEFE;}
+.doublebox{float:left;padding-bottom: 20px;width:220px;margin-bottom:20px;margin-right:20px;background-color:#4D4D4D; text-align:center;color: #FEFEFE;}
+.nobox{float:left;padding-bottom: 20px;width:100px;margin-bottom:20px;margin-right:20px; text-align:center;}
+.line24{height: 24px;}
+.line78{height: 78px;}
+.question{float: left; width: 60%; color:#4D4D4D;border-bottom: 1px dashed #eee;}
+.answer{float: left;color:#4D4D4D; width:30%}
+.div_subtotal{float:left;width:437px;height:150px;font-weight: bold; text-align: center;background-color: #D8D7DC; }
+.subtotal{font-size: 50px;font-weight: bold;}
+.subtotal h3{font-size:40px;padding-bottom:5px;}
+.total{color:red;}
+.div_total{width:500px;}
+.div_equiv{float:left;width:410px;height:100px;font-weight: bold; text-align: center;}
+.div_image{height: 50px;padding-left:180px;}
+.div_equivtotal{width:340px;}
+input { border-radius:5px; padding:2px}
+select { border-radius:5px;padding:2px}
+.tableauImpact {z-index: 100; font-size: 18px; font-weight: 600; color: #333; width: 100%;text-align: center;margin:auto;padding-top:50px;}
+.ges2, .ges4 { display:inline-block;  border-radius: 10px; font-weight: 600; color: #fff; background-color: #6E9A1D; padding:8px; text-align: center;}
+div.barreEco{top:30px}
+div.bloc_graph{position:relative;width:60%;margin:auto;height:40px;margin-top:20px}
+div.barre{border-radius:10px;position:absolute;width:80%;right:10%;left:10%;margin:0 10px;height:10px;background-color:#999}
+.barre_eco_A{background-color:#349a47!important;top:30px!important}
+.barre_eco_B{background-color:#51b84b!important;top:30px!important}
+.barre_eco_C{background-color:#cadb2a!important;top:30px!important}
+.barre_eco_D{background-color:#f6eb15!important;top:30px!important}
+.barre_eco_E{background-color:#fecd06!important;top:30px!important}
+.barre_eco_F{background-color:#f99839!important;top:30px!important}
+.barre_eco_G{background-color:#ed2124!important;top:30px!important}
+.labelHaut{font-weight:300;top:0;background-color:#fff;color:#6e9a1d;border:2px solid #6e9a1d}
+.labMoyenne{left:30%;margin:0 -10px}
+.lab{border-radius:10px;padding:5px;position:absolute;white-space:nowrap;font-size:12px}
+.bg-pt {width: 30px;height: 20px;float:left;padding-right:10px;background: url('Images/css_sprites.png') -227px -10px;}
+.bg-total_post {width: 29px;height: 150px;float:left;background: url('Images/css_sprites.png') -10px -10px;}
+.bg-total_pre {width: 29px;height: 150px;float:left;background: url('Images/css_sprites.png') -59px -10px;}
+.bg-tree {width: 46px;height: 40px;text-align:center;background: url('Images/css_sprites.png') -108px -10px;}
+.bg-uk {width: 33px;height: 20px;float:left;padding-right:10px;background: url('Images/css_sprites.png') -174px -50px;}
+.bg-esp {width: 30px;height: 20px;float:left;padding-right:10px;background: url('Images/css_sprites.png') -174px -90px;}
+.bg-fr {width: 30px;height: 20px;float:left;padding-right:10px;background: url('Images/css_sprites.png') -174px -130px;}
+.bg-germ {width: 33px;height: 20px;float:left;padding-right:10px;background: url('Images/css_sprites.png') -174px -10px;}
+.bg-jacket {width: 40px;height: 54px;background: url('Images/css_sprites.png') -108px -130px;}
+.bg-lightpng {width: 40px;height: 46px;background: url('Images/css_sprites.png') -108px -70px;}
+.bg-299638_200 {width: 15px;height: 15px;float: right;background: url('Images/css_sprites.png') -227px -50px;}
+/*Tooltip*/
+/* Tooltip container */
+.tooltip {color:#4D4D4D; width:20px;background: url('Images/bulb.png');position: relative;display: inline-block;border-bottom: 1px dotted black;}
+.tooltip .tooltiptext {visibility: hidden;width: 250px;background-color: #555;color: #fff;text-align: center;padding: 5px 0;border-radius: 6px;position: absolute;z-index: 1;bottom: 125%;left: 50%;margin-left: -60px;opacity: 0;transition: opacity 0.3s;}
+.tooltip .tooltiptext::after {content: "";position: absolute;top: 100%;left: 50%;margin-left: -5px;border-width: 5px;border-style: solid;border-color: #555 transparent transparent transparent;}
+.tooltip:hover .tooltiptext {visibility: visible;opacity: 1;}
+/*Factor explaination*/
+.co2_explaination{float:left;font-size: 11px;width: 100%;text-align: center;margin:auto;padding-top:10px;padding-left:50px;}
+.co2_explaination ul {list-style-type: none;float:left;width:100%;text-align: center;}
+.li_col{float:left;width:20%}
+#detail_source{float: left;text-align: left;width: 100%; width: 100%;text-align: center;margin:auto;padding-top:10px; font-size: 12px;}
+</style>
+<script>
+/* IMPROVEMENT 
+-> Durée des écrans
+-> Type de voiture
+-> Impact d'un Européen moyen
+*/
+
+var language = ["en", "fr", "es", "por", "de"];
+		var translation = {
+		/*START TRAD*/
+		
+		'trad_title':{'en':'Calculating my environmental impact  <span style=\"font-size:16px\">kg eq CO2)</span>','fr':'Calcul de mon impact environnemental <span style=\"font-size:16px\">(en kg eq CO2)</span>','por':'Calculando o impacto da minha pegada de carbono','es':'Calcular mi impacto de carbono','de':'Berechnung meines CO²-Fußabdrucks  <span style=\"font-size:16px\">(kg Äquivalent CO²)</span>'},
+'trad_device':{'en':'DEVICE','fr':'EQUIPEMENT','por':'Equipamento','es':'Equipamiento','de':'GERÄT'},
+'trad_laptop':{'en':'what is my computer? (or equivalent)','fr':'Quel est mon laptop? (ou équivalent)','por':'Qual é o meu computador? ( ou equivalente)','es':'¿Cuál es mi ordenador? (o equivalente)','de':'Was ist mein Computer? (oder gleichwertig)'},
+'trad_screen':{'en':'Do I have an additional screen?','fr':'Ai je un écran supplémentaire?','por':'Tenho ecrã suplementar?','es':'¿Tengo una pantalla adicional?','de':'Habe ich einen zusätzlichen Bildschirm?'},
+'trad_phone':{'en':'Do I have a phone?','fr':'Ai je un téléphone?','por':'Tenho telemovel?','es':'¿Tengo un celular?','de':'Habe ich ein Telefon?'},
+'trad_storage':{'en':'My Google Storage in Gb<a target=\"_blank\" href=\"https://drive.google.com/settings/storage\">(how to find it)</a>','fr':'Mon stockage Google en GB <a target=\"_blank\" href=\"https://drive.google.com/settings/storage\">(le calculer)</a>','por':'O meu armazenamento Google em GB <a target=\"_blank\" href=\"https://drive.google.com/settings/storage\">(Calcular)</a>','es':'Mi almacenamiento Google en GB <a target=\"_blank\" href=\"https://drive.google.com/settings/storage\">(Cómo calcularlo)</a>','de':'Mein Google-Speicher in GB <a target=\"_blank\" href=\"https://drive.google.com/settings/storage\"> (So finden Sie es) </a>'},
+'trad_emails':{'en':'Number of emails sent per day','fr':'Nombre d&#39;emails envoyés par jour','por':'N.º de emails enviado por dia','es':'Número de correos enviados por día','de':'Anzahl der E-Mails, die pro Tag gesendet werden'},
+'trad_deplacement':{'en':'WORK TRIP','fr':'TRAJET TRAVAIL','por':'Viagem para o trabalho','es':'Viaje para ir al trabajo','de':'Dienstreise'},
+'trad_travel_pro':{'en':'BUSINESS TRIPS','fr':'TRAJETS PRO','por':'Viagens de negócios','es':'Viajes de negocios','de':'Geschäftsreisen'},
+'trad_plane':{'en':'Number of kilometres travelled by airplane (<a target=\"_blank\" href=\"https://fr.distance.to\">caculate it</a>)','fr':'Nombre de kilomètres parcouru en avion (<a target=\"_blank\" href=\"https://fr.distance.to\">le calculer</a>)','por':'Número de quilómetros percorrido por avião (<a target=\"_blank\" href=\"https://fr.distance.to\">Calcular</a>)','es':'Número de kilómetros recorridos en avión (<a target=\"_blank\" href=\"https://fr.distance.to\">Calcular</a>)','de':'Anzahl der Kilometer, die mit dem Flugzeug zurückgelegt wurden. (<a target=\"_blank\" href=\"https://fr.distance.to\"> berechnen Sie es </a>)'},
+'trad_train':{'en':'Number of kilometres travelled by train','fr':'Nombre de kilimètres parcourus en train','por':'','es':'','de':''},
+'trad_car':{'en':'My daily commute to work by car Round trip (km)','fr':'Mes déplacements quotidien travail en voiture AR (km)','por':'As minhas viagens diárias para o trabalho de carro - ida e volta (km)','es':'Mis viajes cotidianos para ir al trabajo en coche, ida y vuelta (km)','de':'Mein täglicher Weg zur Arbeit mit dem Auto, Hin- und Rückfahrt (km)'},
+'trad_car_percent':{'en':'% by car','fr':'% voiture','por':'% carro','es':'% en coche','de':'% mit dem Auto'},
+'trad_commun':{'en':'My daily trips by public transport Round Trip (km)','fr':'Mes déplacements quotidien en transport en commun AR (km)','por':'As minhas viagens diárias para o trabalho de transportes públicos  - ida e volta (km)','es':'Mis viajes cotidianos para ir al trabajo en transporte público, ida y vuelta (km)','de':'Meine täglichen Fahrten mit öffentlichen Verkehrsmitteln, Hin- und Rückfahrt (km)'},
+'trad_commun_percent':{'en':'% by public transport','fr':'% transport commun','por':'% transportes públicos','es':'% en transporte público','de':'% mit öffentlichen Verkehrsmitteln'},
+'trad_bike':{'en':'My daily trips by bike or on foot Round Trip (km)','fr':'Mes déplacements quotidien en vélo ou à pied AR (km)','por':'As minhas viagens diárias para o trabalho de bicicleta ou a pé - ida e volta (km)','es':'Mis viajes cotidianos para ir al trabajo en bici o a pie, ida y vuelta (km)','de':'Meine täglichen Ausflüge mit dem Fahrrad oder zu Fuß, Hin- und Rückweg (km)'},
+'trad_bike_percent':{'en':'% by bike or on foot','fr':'% vélo','por':'% de bicicleta ou a pé','es':'% en bici o a pie','de':'% mit dem Fahrrad oder zu Fuß'},
+'trad_numeric_impact':{'en':'MY DIGITAL IMPACT','fr':'MON IMPACT NUMERIQUE','por':'O MEU IMPACTO DIGITAL','es':'MI IMPACTO DIGITAL','de':'MEINE DIGITALEN AUSWIRKUNGEN'},
+'trad_moving':{'en':'MY TRAVEL IMPACT','fr':'MON IMPACT DEPLACEMENT','por':'O MEU IMPACTO DAS VIAGENS','es':'EL IMPACTO DE MIS VIAJES','de':'MEINE REISE AUSWIRKUNG'},
+'trad_global':{'en':'MY ANNUAL IMPACT ','fr':'IMPACT ANNUEL @Decathtlon','por':'O MEU IMPACTO ANUAL ','es':'MI IMPACTO ANUAL','de':'MEINE JÄHRLICHEN AUSWIRKUNGEN '},
+'trad_tree':{'en':'Trees necessary to catch the CO2 value in 50 years','fr':'Arbres nécessaires pour capter le CO2eq dans 50 ans','por':'Número de árvores para compensar o meu impacto de CO2<br/>','es':'El número de árboles para compensar mi impacto de CO2<br/>','de':'Anzahl der Bäume zum Ausgleich meines CO²-Fußabdrucks (Zeitraum von 50 Jahren) <br/>'},
+'trad_forclaz':{'en':'Production of Forclaz 50 polar<br/>','fr':'Production de polaires Forclaz 50<br/>','por':'Produção de polares Forclaz 50<br/>','es':'Producción de polares Forclaz 50<br/>','de':'Produktion von Forclaz 50 Fleecejacke <br/>'},
+'trad_equivalent':{'en':'equivalent to','fr':'l\'équivalent','por':'equivalente a ','es':'equivalente a','de':'gleichwertig'},
+'trad_daily':{'en':'DAILY','fr':'QUOTIDIEN','por':'DIARIAMENTE','es':'DIARIO','de':'TÄGLICH'},
+'trad_annual':{'en':'ANNUAL','fr':'ANNUEL','por':'ANUALMENTE','es':'ANUAL','de':'JÄHRLICH'},
+'trad_lessstorage':{'en':'<a href=\"http://bit.ly/nettoyerboitemail\" target=\"_blank\" style=\"color:#1155cc\">/!\ How to decrease my Google storage?</a>','fr':'<a href=\"http://bit.ly/nettoyerboitemail\" target=\"_blank\" style=\"color:#1155cc\">/!\ Comment diminuer mon stockage Google?</a>','por':'<a href=\"http://bit.ly/nettoyerboitemail\" target=\"_blank\" style=\"color:#1155cc\">/!\ Como diminuir o meu armazenamento Google?</a>','es':'<a href=\"http://bit.ly/nettoyerboitemail\" target=\"_blank\" style=\"color:#1155cc\">/!\ ¿Cómo reducir mi almacenamiento Google?</a>','de':'<a href=\"http://bit.ly/nettoyerboitemail\" target=\"_blank\" style=\"color:#1155cc\">/!\ How to decrease my Google storage?</a>'},
+'trad_annualimpact':{'en':'ANNUAL IMPACT','fr':'IMPACT ANNUEL','por':'IMPACTO ANUAL','es':'IMPACTO ANUAL','de':'JÄHRLICHE AUSWIRKUNGEN'},
+'trad_bulb':{'en':'A light bulb on for','fr':'Une ampoule allumée pendant ','por':'Uma lâmpada acesa durante','es':'Un foco prendido durante','de':'Eine Glühlampe leuchtet für'},
+'trad_year':{'en':'year(s)','fr':'an(s)','por':'ano (s)','es':'año(s)','de':'Jahr(e)'},
+'trad_empreinte_page':{'en':'Environmental footprint of this page','fr':'Empreinte environnemental de cette page','por':'Pegada ambiental desta página','es':'Huella ambiental de esta página','de':'Umweltbilanz dieser Seite'},
+'trad_lasting':{'en':'Duration of use','fr':'Durée d\'utilisation','por':'Duração da utilização','es':'Duración del uso','de':'Dauer der Nutzung'},
+'trad_streaming':{'en':'Hours of video streaming per day','fr':'Heures de streaming vidéo par jour','por':'Horas de transmissão de vídeo por dia','es':'Horas de transmisión de vídeo por día','de':'Stunden Videostreaming pro Tag'},
+'trad_intro1':{'en':'What is your digital environmental impact?','fr':'Quel est votre impact environnemental numérique ?','por':'','es':'','de':''},
+'trad_intro2':{'en':'Our use of digital technology is exploding, both at the personal and professional level. Our impacts are difficult to quantify because they are dematerialized.','fr':'Nos usages du numérique explosent; tant au niveau particulier que professionnel. Nos impacts sont difficilement quantifiables car dématérialisés.','por':'','es':'','de':''},
+'trad_intro3':{'en':'In order to shed light on the impacts related to our over-consumption of numbers, <a href="http://www.decathlon.fr" target="_blank">Decathlon</a> has created a calculator that allows us to simply calculate its professional numerical impact.','fr':'Afin d’éclairer les impacts liés à notre surconsommation du numérique, <a href="http://www.decathlon.fr" target="_blank">Decathlon</a> a créé une calculatrice qui permet de calculer simplement son impact numérique professionnel.','por':'','es':'','de':''},
+'trad_intro4':{'en':'The objective is of course to associate it with concrete actions (extending the lifespan of the equipment, reducing its online storage...) but also to compare it to our daily uses (work / air travel...).','fr':'L\’objectif est bien sûr d’y associer des actions concrètes (allonger la durée de vie du matériel, diminution de son stockage en ligne…) mais aussi le comparer à nos usages quotidiens (trajet travail / déplacement aérien…)','por':'','es':'','de':''},
+'trad_intro5':{'en':'The calculator is based on databases provided by the <a href="https://www.ademe.fr/" target="_blank">ADEME</a> as well as data from <a href="https://www.greenit.fr/" target="_blank">GreenIT.fr</a>','fr':'La calculatrice se base sur les bases de données fournies par l’<a href="https://www.ademe.fr/" target="_blank">ADEME</a> ainsi que des données de <a href="https://www.greenit.fr/" target="_blank">GreenIT.fr</a>','por':'','es':'','de':''},
+'trad_reduce':{'en':'Reduce / Expand Intro','fr':'Ouvrir / Fermer l\'introduction','por':'','es':'','de':''},
+'trad_tips_lasting':{'en':'The longer you keep your equipment, the less environmental impact it will have on the environment each year.','fr':'Plus vous gardez longtemps votre équipement, moins il aura d\'impact environnemental annuel','por':'','es':'','de':''},
+'trad_tips_screen':{'en':'The screen has a significant environmental impact. If you really need it, keep it as long as possible.','fr':'L\'écran a un impact environnental important. Si vous en avez vraiment besoin gardez le le plus longtemps possible','por':'','es':'','de':''},
+'trad_tips_cloud':{'en':'Remember to clean regularly and to store only what is necessary.','fr':'Pensez à nettoyer régulièrement et à ne stocker que ce qui est nécessaire','por':'','es':'','de':''},
+'trad_tips_streaming':{'en':'Streaming accounts for 25% of the world\'s bandwidth. To be used in moderation','fr':'Le streaming représente 25% de la bande passante mondiale. A utiliser avec modération','por':'','es':'','de':''},
+'trad_trip_soft':{'en':'Soft mobility greatly reduces your environmental impact.','fr':'La mobilité douce permet de diminuer fortement son impact environnemental','por':'','es':'','de':''},
+'trad_sources1':{'en':'Car: 253g CO2eq (1 passenger) /km','fr':'Voiture: 253g CO2eq (1 passager) /km','por':'','es':'','de':''},
+'trad_sources2':{'en':'Train: 37g CO2eq /km','fr':'Train: 37g CO2eq /km','por':'','es':'','de':''},
+'trad_sources3':{'en':'Intercity: 93g CO2eq /km','fr':'Intercity: 93g CO2eq /km','por':'','es':'','de':''},
+'trad_sources4':{'en':'Aircraft: 138g CO2eq /km','fr':'Avion: 138g CO2eq /km','por':'','es':'','de':''},
+'trad_sources5':{'en':'Energy (european average): 500g CO2eq / kwh','fr':'Energie (moyenne europe): 500g CO2eq / kwh','por':'','es':'','de':''},
+'trad_sources6':{'en':'Email sent (medium): 10g CO2eq without attachment','fr':'Email envoyé (moyen): 10g CO2eq sans pièce jointe','por':'','es':'','de':''},
+'trad_sources7':{'en':'Gigabyte stored on the cloud: 0.330kg CO2eq /year (USA)','fr':'GigaOctet stocké sur le cloud: 0.330g CO2eq /an (redondé USA)','por':'','es':'','de':''},
+'trad_sources8':{'en':'Streaming: 3.18kg CO2eq /hour','fr':'Streaming: 3.18kg CO2eq /heure','por':'','es':'','de':''},
+'trad_sources9':{'en':'Other sources','fr':'Autres sources','por':'','es':'','de':''},
+'trad_sources10':{'en':'Equipment manufacturers site (Apple / Dell / Lenovo)','fr':'Site des constructeurs d\'équipements (Apple / Dell / Lenovo)','por':'','es':'','de':''},
+'trad_sources11':{'en':'Tree compensation: 20kg CO2eq /year','fr':'Compensation arbre: 20kg CO2eq /an','por':'','es':'','de':''},
+'trad_sources12':{'en':'Polar :11kg CO2eq (LCA product)','fr':'Polaire :11kg CO2eq (ACV produit)','por':'','es':'','de':''},
+'trad_sources13':{'en':'Lamp on: 19g CO2eq / hour','fr':'Lampe allumée: 19g CO2eq / heure','por':'','es':'','de':''},
+		/*END TRAD*/
+		};
+		var device = [
+		{'key':'Device1','name':'Dell Optiplex 3020','brand':'DELL','total':'624','use':'50','production':'412','lasting':3,'epeat':'Oui', 'TCO': '','link':'http://i.dell.com/sites/doccontent/corporate/corp-comm/en/Documents/WP-OptiPlex-3010-MT.pdf'},
+{'key':'Device2','name':'Dell Optiplex 3010','brand':'DELL','total':'624','use':'50','production':'412','lasting':3,'epeat':'Gold', 'TCO': '','link':'http://i.dell.com/sites/doccontent/corporate/corp-comm/en/Documents/WP-OptiPlex-3010-MT.pdf'},
+{'key':'Device3','name':'Dell Latitude E7240','brand':'DELL','total':'310','use':'50','production':'276','lasting':3,'epeat':'', 'TCO': '','link':'http://i.dell.com/sites/doccontent/corporate/corp-comm/en/Documents/PCF-WP-E7240.pdf'},
+{'key':'Device4','name':'Dell Latitude E7440','brand':'DELL','total':'276','use':'50','production':'243','lasting':3,'epeat':'', 'TCO': '','link':'http://i.dell.com/sites/doccontent/corporate/corp-comm/en/Documents/PCF-WP-E7440.pdf'},
+{'key':'Device5','name':'Dell Latitude E5440','brand':'DELL','total':'292','use':'50','production':'260','lasting':3,'epeat':'', 'TCO': '','link':'https://i.dell.com/sites/doccontent/corporate/corp-comm/en/Documents/PCF-WP-E5540.pdf'},
+{'key':'Device6','name':'Dell Latitude E7450','brand':'DELL','total':'292','use':'50','production':'260','lasting':3,'epeat':'Silver', 'TCO': '','link':'https://i.dell.com/sites/doccontent/corporate/corp-comm/en/Documents/PCF-WP-E5540.pdf'},
+{'key':'Device7','name':'Dell Latitude E7470','brand':'DELL','total':'292','use':'50','production':'260','lasting':3,'epeat':'Gold', 'TCO': '','link':'https://i.dell.com/sites/doccontent/corporate/corp-comm/en/Documents/PCF-WP-E5540.pdf'},
+{'key':'Device8','name':'Dell Latitude E5540','brand':'DELL','total':'311','use':'50','production':'267','lasting':3,'epeat':'Gold', 'TCO': '','link':'https://i.dell.com/sites/doccontent/corporate/corp-comm/en/Documents/PCF-WP-E5440.pdf'},
+{'key':'Device9','name':'Dell Latitude E3340','brand':'DELL','total':'314','use':'50','production':'248','lasting':3,'epeat':'Gold', 'TCO': '','link':'https://i.dell.com/sites/doccontent/corporate/corp-comm/en/Documents/PCF-WP-E3440.pdf'},
+{'key':'Device10','name':'Mac book air','brand':'APPLE','total':'339','use':'50','production':'295','lasting':3,'epeat':'Gold', 'TCO': '','link':'https://www.apple.com/environment/pdf/products/notebooks/13-inch_MacBookAir_PER_June2017.pdf'},
+{'key':'Device11','name':'Macbook Pro','brand':'APPLE','total':'366','use':'50','production':'285','lasting':3,'epeat':'Gold', 'TCO': '','link':'https://www.apple.com/euro/environment/pdf/f/generic/products/notebooks/15-inch_MacBookPro_w_Thunderbolt3_PER_July2018.pdf'},
+{'key':'Device12','name':'Lenovo X270','brand':'LENOVO','total':'851','use':'50','production':'766','lasting':3,'epeat':'Gold', 'TCO': 'YES','link':'https://www.lenovo.com/medias/PCF-ThinkPad-X270.pdf?context=bWFzdGVyfEVDTy1QQ0YtTk9URUJPT0t8MTUxNzY3fGFwcGxpY2F0aW9uL3BkZnxFQ08tUENGLU5PVEVCT09LL2g4Yi9oMDAvOTQ1MjU3MjgwMzEwMi5wZGZ8MDcxZjUxYjAwNGIxYzllNDQ5NGYyODM1YzExMTM0YjExODI1YzBjNDM3YmY4MGNkOWZiOTJkNjNiNDQzMDIwYw'},
+{'key':'Device13','name':'Lenovo T470','brand':'LENOVO','total':'493','use':'50','production':'345','lasting':3,'epeat':'Gold', 'TCO': 'YES','link':'https://www.lenovo.com/medias/PCF-ThinkPad-T470.pdf?context=bWFzdGVyfEVDTy1QQ0YtTk9URUJPT0t8MTg0NDI1fGFwcGxpY2F0aW9uL3BkZnxFQ08tUENGLU5PVEVCT09LL2gxOC9oMWEvOTQ1MjU3MDE4MTY2Mi5wZGZ8MWM5OWEwNTc5ZTQ0YjFhN2Y1NDliNDMzY2YzYzZiYzMwM2NlNjc2ZDg2NTVkOGVjNzVlNjdjMTRiYTgxODc5Nw'},
+{'key':'Device14','name':'Lenovo T440','brand':'LENOVO','total':'394','use':'50','production':'331','lasting':3,'epeat':'Gold', 'TCO': '','link':'https://www.lenovo.com/medias/PCF-Lenovo-ThinkPad-T440s.pdf?context=bWFzdGVyfHNvY2lhbF9yZXNwb25zaWJpbGl0eXwyNDI3MzZ8YXBwbGljYXRpb24vcGRmfHNvY2lhbF9yZXNwb25zaWJpbGl0eS9oYmEvaDA0LzkzNTIxNDM1MzYxNTgucGRmfDk0MmY0N2M5Y2ZiY2U5MDBmOTZkNWZlN2U3OTRjZWQ2MjgzNjc5YmYzNzcwYzViMWQzYTcxNjQwODVmN2EwM2E'},
+{'key':'Device15','name':'Lenovo T450','brand':'LENOVO','total':'562','use':'50','production':'483','lasting':3,'epeat':'Gold', 'TCO': '','link':'https://www.lenovo.com/medias/PCF-ThinkPad-T450.pdf?context=bWFzdGVyfHNvY2lhbF9yZXNwb25zaWJpbGl0eXwyMDIzMzN8YXBwbGljYXRpb24vcGRmfHNvY2lhbF9yZXNwb25zaWJpbGl0eS9oMTEvaDcyLzkzNTIxNDM2MzQ0NjIucGRmfDM5MmI4Y2YzNmNhNDIxYWM2NTU0NDA5NDUyYWM2M2QyZGJkMWQ5NGE2ZWYzM2ZjOTQ0OWM3Mjk3MzYxMDNmZjg'},
+{'key':'Device16','name':'Lenovo M73','brand':'LENOVO','total':'899','use':'50','production':'530','lasting':3,'epeat':'Gold', 'TCO': '','link':'https://www.lenovo.com/medias/PCF-ThinkCentre-M73s-M4500s.pdf?context=bWFzdGVyfHNtYnwxOTk2NTh8YXBwbGljYXRpb24vcGRmfGhmYy9oMGUvOTQwNzE5NTk3MTYxNC5wZGZ8ZDg3ODNjMDBlOWMyY2U5NTBmNTgxNTdiYzE1OWNjY2NlNjI3ZDA5NzM2ZGUxYWMwMWM1NTI3ZTg2YjQ4ZGEzMQ'},
+{'key':'Device17','name':'Lenovo T430','brand':'LENOVO','total':'345','use':'50','production':'259','lasting':3,'epeat':'Gold', 'TCO': '','link':'https://www.lenovo.com/us/en/social_responsibility/PCF_Typical_Notebook'},
+{'key':'Device18','name':'Lenovo X250','brand':'LENOVO','total':'338','use':'50','production':'257','lasting':3,'epeat':'Gold', 'TCO': '','link':'https://www.lenovo.com/medias/PCF-ThinkPad-X250.pdf?context=bWFzdGVyfHNvY2lhbF9yZXNwb25zaWJpbGl0eXwyMDkxODB8YXBwbGljYXRpb24vcGRmfHNvY2lhbF9yZXNwb25zaWJpbGl0eS9oNjQvaDA4LzkzNTIxNTAxODgwNjIucGRmfGFlMDY2ZDExNDYxYTYyMmYzNTg2NjAzNTg5NmJlMWEyZGRlNjBhMGU4NDZjMTdkNjRiMThkMDE3Mjk4OThjNDU'},
+{'key':'Device19','name':'Dell E5490','brand':'DELL','total':'302','use':'50','production':'248','lasting':3,'epeat':'Gold', 'TCO': '','link':'https://i.dell.com/sites/csdocuments/CorpComm_Docs/en/carbon-footprint-latitude-5490.pdf?newtab=true'},
+{'key':'Device20','name':'Dell E7480','brand':'DELL','total':'300','use':'50','production':'246','lasting':3,'epeat':'', 'TCO': '','link':'https://i.dell.com/sites/csdocuments/CorpComm_Docs/en/carbon-footprint-latitude-7480.pdf?newtab=true'},
+{'key':'Device21','name':'Dell E7390','brand':'DELL','total':'264','use':'50','production':'232','lasting':3,'epeat':'', 'TCO': '','link':'https://i.dell.com/sites/csdocuments/CorpComm_Docs/en/carbon-footprint-latitude-7390.pdf?newtab=true'},
+{'key':'Device22','name':'Dell E7280','brand':'DELL','total':'268','use':'50','production':'228','lasting':3,'epeat':'Gold', 'TCO': 'YES','link':'https://i.dell.com/sites/csdocuments/CorpComm_Docs/en/carbon-footprint-latitude-7280.pdf?newtab=true'},
+{'key':'Device23','name':'Dell E7270','brand':'DELL','total':'268','use':'50','production':'228','lasting':3,'epeat':'', 'TCO': '','link':'https://i.dell.com/sites/csdocuments/CorpComm_Docs/en/carbon-footprint-latitude-7280.pdf?newtab=true'},
+{'key':'Device24','name':'Dell 5400','brand':'DELL','total':'299','use':'50','production':'251','lasting':3,'epeat':'Silver', 'TCO': '','link':'https://i.dell.com/sites/csdocuments/CorpComm_Docs/en/carbon-footprint-latitude-5450.pdf?newtab=true'},
+{'key':'Device25','name':'Lenovo T480','brand':'LENOVO','total':'448','use':'50','production':'314','lasting':3,'epeat':'Gold', 'TCO': 'YES','link':'https://www.lenovo.com/us/en/social_responsibility/PCF-ThinkPad-T480.pdf'},
+{'key':'Device26','name':'Dell E7270','brand':'DELL','total':'296','use':'50','production':'240','lasting':3,'epeat':'Gold', 'TCO': 'NO','link':'https://i.dell.com/sites/csdocuments/CorpComm_Docs/en/carbon-footprint-latitude-E7270.pdf?newtab=true'},
+{'key':'Device27','name':'Dell E5280','brand':'DELL','total':'271','use':'50','production':'228','lasting':3,'epeat':'Gold', 'TCO': 'YES','link':'https://i.dell.com/sites/csdocuments/CorpComm_Docs/en/carbon-footprint-latitude-5280.pdf?newtab=true'},
+{'key':'Device28','name':'Chromebook 3189','brand':'DELL','total':'302','use':'50','production':'266','lasting':3,'epeat':'Gold', 'TCO': 'YES','link':'https://i.dell.com/sites/csdocuments/CorpComm_Docs/en/carbon-footprint-latitude-3189.pdf'},
+{'key':'Device29','name':'Dell Optiplex 3060','brand':'DELL','total':'569','use':'50','production':'290','lasting':3,'epeat':'Silver', 'TCO': 'YES','link':'https://i.dell.com/sites/csdocuments/CorpComm_Docs/en/carbon-footprint-optiplex-3060-tower.pdf?newtab=true'},
+{'key':'Device30','name':'Dell Optiplex 3050','brand':'DELL','total':'511','use':'50','production':'281','lasting':3,'epeat':'Silver', 'TCO': 'YES','link':'https://i.dell.com/sites/csdocuments/CorpComm_Docs/en/carbon-footprint-optiplex-3050-tower.pdf?newtab=true'},
+{'key':'Device31','name':'Chromebook 13 2017','brand':'LENOVO','total':'338','use':'50','production':'264','lasting':3,'epeat':'Gold', 'TCO': '','link':'https://www.lenovo.com/medias/PCF-N22-20-Touch-Chromebook.pdf?context=bWFzdGVyfHNvY2lhbF9yZXNwb25zaWJpbGl0eXwyNjQ5OTV8YXBwbGljYXRpb24vcGRmfHNvY2lhbF9yZXNwb25zaWJpbGl0eS9oMjEvaDA2LzkzNTIxNTg2MDk0MzgucGRmfDY0MDhjMzQ5OTQ4ZjgyYjliZDliMmM1Y2MyYzEzYmE0MTg3MmZlZTgzYTBjYWM4YmEzOWRmNWI1MTRkYzA0MzI'},
+{'key':'Device32','name':'Dell Chromebook 11 3180','brand':'DELL','total':'302','use':'50','production':'266','lasting':3,'epeat':'Bronze', 'TCO': 'YES','link':'https://i.dell.com/sites/csdocuments/CorpComm_Docs/en/carbon-footprint-latitude-3189.pdf'},
+{'key':'Device33','name':'Dell Optiplex 3040','brand':'DELL','total':'511','use':'50','production':'281','lasting':3,'epeat':'Silver', 'TCO': 'YES','link':'https://i.dell.com/sites/csdocuments/CorpComm_Docs/en/carbon-footprint-optiplex-3050-tower.pdf?newtab=true'},
+{'key':'Device34','name':'Autre','brand':'OTHER','total':'399','use':'50','production':'297','lasting':3,'epeat':'', 'TCO': '','link':''},
+		];
+		var phone = [{'name':'Autre telephone','total':'45.92','use:':'0.18','production':'56','lasting':'3','class':''}];
+		var ecran = [{'name':'Ecran','total':'617','use:':'0.53','production':'290','lasting':'4','class':''}];
+		var impactEmails = [{'key':'E1','name':'0 -> 10 ','total':0.15},{'key':'E2','name':'10 -> 20','total':0.3},	{'key':'E3','name':'20 -> 40','total':0.6},	{'key':'E4','name':'+ 40','total':1.05},];
+		var working_days = 215;
+		//330g CO2/Giga /USA
+		var CO2GigaByteCloud = 0.330; // Fred Bordage Green IT
+		//253g/km 
+		var CO2kmcar = 0.253; // ADEME BASE CARBONE v11.5
+		//
+		var CO2kmtrain = 0.037; // ADEME BASE CARBONE v11.5 FR
+		//93g/km -> Medium Bus / intercity
+		var CO2kmtrainBus = 0.093; // ADEME BASE CARBONE v11.5
+		//138g/km 
+		var CO2kmairtravel = 0.138; // ADEME BASE CARBONE v11.5
+		//500g / kwh -> Energétic mix Europe
+		var CO2kwh = 0.5;
+		//Medium kg CO2
+		var CO2MoyEuropean = 9000;
+		var CO2MoyFrench = 12000;
+		//CO2 streaming per minute
+		var CO2streaming = 0.053;
+		//CO2 compensed per a tree per year // ADEME
+		var CO2TreeYear = 20;
+		//CO2 Fleece: 11kg CO2 // LCA Decathlon
+		var CO2Fleece = 11;
+
+
+		$(document).ready(function(){
+			var total_CO2_digital = 0;var total_CO2_travel = 0;	var total_CO2 = 0; var percent_european = 0;
+			//Get all Brands
+			var brands = getBrands();
+			populateDevice($("#sel_laptop"), device);
+			populate($("#sel_emails"), impactEmails);
+			
+
+			function populateDevice(select, jsonvar){
+				var brands = "";
+				jsonvar.sort(function (a, b) {
+					return a.brand.localeCompare(b.brand);
+				});
+
+				$.each(jsonvar,function(key, value) 
+				{
+					if(brands != value.brand)
+						select.append('<optgroup label=' + value.brand + '>');
+					else
+						select.append('</optgroup>');
+					select.append('<option value=' + value.key + '>' + value.name + '</option>');
+					brands = value.brand;
+				});
+			}
+
+			function populate(select, jsonvar){
+				$.each(jsonvar,function(key, value) 
+				{
+					select.append('<option value=' + value.key + '>' + value.name + '</option>');
+				});
+			}
+
+			function getBrands(){
+				//Filter Json devices with brands
+				var lookup = {};
+				var items = device;
+				var result = [];
+
+				for (var item, i = 0; item = items[i++];) {
+				var brand = item.brand;
+
+				if (!(brand in lookup)) {
+					lookup[brand] = 1;
+					result.push(brand);
+				}
+				}
+				return result;
+			}
+
+			function ResetScreen(){
+				$("#screen_total").html("");
+				$("#screen_total_year").html("");
+			}
+			function ResetPhone(){
+				$("#phone_total").html("");
+				$("#phone_total_year").html("");
+			}
+			
+			function RefreshTotal(){
+				total_CO2_digital = Number($("#laptop_impact_annuel").html()) + Number($("#screen_total_year").html()) + Number($("#phone_total_year").html()) + Number($("#storage_google_year").html()) + Number($("#impact_email_year").html()) + Number($("#impact_stream_year").html());
+				
+				total_CO2_travel = Number($("#impact_car_year").html()) + Number($("#impact_public_transport_year").html()) + Number($("#impact_plane_year").html()) + Number($("#impact_train_year").html());
+				
+				total_CO2 = total_CO2_digital + total_CO2_travel;
+				
+				$("#total_impact_digital").html(total_CO2_digital.toFixed(2));
+				$("#total_impact_trip").html(total_CO2_travel.toFixed(2));
+				$("#total_impact").html(total_CO2.toFixed(2));
+				
+				//20kg per year per tree -> 2500
+				nb_tree = (total_CO2.toFixed(2) /CO2TreeYear / 50);
+				nb_fleece = (total_CO2.toFixed(2) /CO2Fleece);
+				nb_bulb = (total_CO2.toFixed(2) *1000/19/24/365);
+				percent_european = (total_CO2.toFixed(2) /CO2MoyFrench * 100);
+
+				$("#nb_tree").html(nb_tree.toFixed(2));
+				$("#nb_fleece").html(nb_fleece.toFixed(2));
+				$("#nb_bulb").html(nb_bulb.toFixed(2));
+				$("#percent_conso").html(percent_european.toFixed(2));
+			}
+
+			function refreshLaptop(){
+				var laptop = $.grep(device, function( n, i ) {
+				  return n.key===$("#sel_laptop").val();
+				});
+				var lasting = $("#sel_lastingLaptop").val();
+				var use = Number(laptop[0].use * lasting * CO2kwh);
+				var prod = Number(laptop[0].production);
+				$("#laptop_total").html((use + prod).toFixed(2));
+				$("#laptop_production").html(prod);
+				$("#laptop_use").html(use.toFixed(2));
+				$("#laptop_impact_annuel").html(((use + prod )/ lasting).toFixed(2));
+				
+				if (laptop[0].link != ""){
+					$("#device_link").attr("href", laptop[0].link);
+					$("#device_link").css("display", "inline");
+				}
+				RefreshTotal();
+			}
+			
+			$("#sel_laptop").change(function(){
+				refreshLaptop();
+			});
+
+			$("#sel_lastingLaptop").change(function(){
+				refreshLaptop();
+			});
+			
+			$("#screen").change(function(){
+				if ($("#screen").val() != "0"){
+					var nb_screen = Number($("#screen").val());
+					var total = ecran[0].total * nb_screen;
+					$("#screen_total").html(total);
+					$("#screen_total_year").html((total / ecran[0].lasting).toFixed(2));
+				}
+				else
+					ResetScreen();
+					
+				RefreshTotal();
+			});
+			$("#phone").change(function(){
+				if ($("#phone").val() == "yes"){
+					$("#phone_total").html(phone[0].total);
+					$("#phone_total_year").html((phone[0].total/ phone[0].lasting).toFixed(2));
+				}
+				else
+					ResetPhone();
+					
+				RefreshTotal();
+			});
+			
+			$("#storage_google").change(function(){
+				if ($("#storage_google").val() != ""){
+					$("#storage_google_year").html($("#storage_google").val() * CO2GigaByteCloud);
+				}
+				else
+					$("#storage_google_year").html("0");
+					
+				RefreshTotal();
+			});
+			
+			$("#sel_emails").change(function(){
+				var impactdaily = $.grep(impactEmails, function( n, i ) {
+					  return n.key===$("#sel_emails").val();
+					});
+				if ($(sel_emails).val() != ""){
+					$("#impact_email_daily").html(impactdaily[0].total);
+					$("#impact_email_year").html(impactdaily[0].total * working_days);
+				}
+				else{
+					$("#impact_email_daily").html("0");
+					$("#impact_email_year").html("0");
+					}
+					
+				RefreshTotal();
+			});
+
+			$("#sel_stream").change(function(){
+				if ($("#sel_stream").val() != ""){
+					$("#impact_stream_daily").html(Number($("#sel_stream").val() * CO2streaming).toFixed(0));
+					$("#impact_stream_year").html(Number($("#sel_stream").val() * CO2streaming  * working_days).toFixed(0));
+				}
+				else{
+					$("#impact_stream_daily").html("0");
+					$("#impact_stream_year").html("0");
+				}
+					
+				RefreshTotal();
+			});
+
+			$("#trip_airplane").change(function(){
+				if ($("#trip_airplane").val() != ""){
+					var impactAnnuel = Number($("#trip_airplane").val() * CO2kmairtravel).toFixed(2);
+					$("#impact_plane_year").html(Number(impactAnnuel).toFixed(2) );
+				}
+				else{
+					$("#impact_plane_year").html("0");
+				}
+				RefreshTotal();
+			});
+
+			$("#trip_train").change(function(){
+				if ($("#trip_train").val() != ""){
+					var impactAnnuel = Number($("#trip_train").val() * CO2kmtrain).toFixed(2);
+					$("#impact_train_year").html(Number(impactAnnuel).toFixed(2) );
+				}
+				else{
+					$("#impact_train_year").html("0");
+				}
+				RefreshTotal();
+			});
+			
+			$("#trip_car").change(function(){
+				if ($("#trip_car").val() != ""){
+					var impactQuotidien = Number($("#trip_car").val() * CO2kmcar).toFixed(2);
+					var pourcent = $("#pourcent_car").val();
+					$("#impact_car_daily").html(impactQuotidien);
+					$("#impact_car_year").html(Number(impactQuotidien * working_days * (pourcent/ 100)).toFixed(2) );
+				}
+				else{
+					$("#impact_car_daily").html("0");
+					$("#impact_car_year").html("0");
+				}
+				RefreshTotal();
+			});
+			
+			$("#pourcent_car").change(function(){
+				if ($("#pourcent_car").val()>100){
+					$("#pourcent_car").val(100);
+					}
+				$("#trip_car").change();
+				CheckPercent();
+			});
+			
+			$("#pourcent_car").click(function(){$("#pourcent_car").change()});
+			
+			$("#trip_public_transport").change(function(){
+				if ($("#trip_public_transport").val() != ""){
+					var impactQuotidien = Number($("#trip_public_transport").val() * CO2kmtrainBus).toFixed(2);
+					var pourcent = $("#percent_public_transport").val();
+					$("#impact_public_transport_daily").html(impactQuotidien);
+					$("#impact_public_transport_year").html(Number(impactQuotidien * working_days * (pourcent/ 100)).toFixed(2) );
+				}
+				else{
+					$("#impact_public_transport_daily").html("0");
+					$("#impact_public_transport_year").html("0");
+				}
+				RefreshTotal();
+			});
+			
+			$("#percent_public_transport").change(function(){
+				if ($("#percent_public_transport").val()>100){
+					$("#percent_public_transport").val(100);
+					}
+				$("#trip_public_transport").change();
+				CheckPercent();
+			});
+			
+			
+			$("#percent_public_transport").click(function(){$("#percent_public_transport").change()});
+			
+			$("#percent_bike").change(function(){
+				if (Number($("#percent_bike").val())>100){
+					$("#percent_bike").val(100);
+                }
+                $("#impact_bike_daily").html("0");
+                $("#impact_bike_year").html("0");
+                
+				CheckPercent();
+			});
+			
+			function CheckPercent()
+			{
+				if (Number($("#percent_bike").val()) + Number($("#percent_public_transport").val()) + Number($("#pourcent_car").val()) >100)
+					$(".percent").css("background-color", "red")
+				else if(Number($("#percent_bike").val()) + Number($("#percent_public_transport").val()) + Number($("#pourcent_car").val()) <100)
+					$(".percent").css("background-color", "orange")
+				else
+					$(".percent").css("background-color", "#ffffff");
+			}			
+			$(".lng").click(function(){
+				Translate($(this).attr("id"));
+				$(this).css("font-weight", "bold");
+			});
+			
+			function Translate(lng){
+				if (jQuery.inArray(lng, language) == -1)
+					lng="fr";
+				$(".lng").css("font-weight", "");
+				$('[data-trad]').each(function() {
+					if (translation[$(this).attr("data-trad")][lng] != '')
+						$(this).html(translation[$(this).attr("data-trad")][lng]);
+					else
+						$(this).html(translation[$(this).attr("data-trad")]["en"]);
+				});
+				$("html").attr("lang", lng);
+			}
+			$("#sel_laptop").change();
+			$("#screen").change();
+			$("#phone").change();
+            $("#sel_emails").change();
+			$("#sel_stream").change();
+            $("#storage_google").change();
+			$("#trip_public_transport").change();
+            $("#trip_car").change();
+            $("#percent_bike").change();
+            $("#trip_airplane").change();
+			$("#trip_train").change();
+            
+
+			var url = document.location.href;
+			var lng = url.substring(url.indexOf("#")+1);
+			Translate(lng.toLowerCase());
+
+			$("#score_env").html(localStorage.note);
+        	$("#note_env").html(localStorage.eco_index);
+
+			$("#reduce_intro").click(function(){
+				$("#intro").toggle();
+			});
+			$("#detail_source").click(function(){
+				$(".co2_explaination").toggle();
+				return false;
+			});
+		});
+		
+</script>    
+</head>
+<body>
+    <div id="page">
+        <div id="head">
+            <div id="head_container">
+                <div id="logo">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="504 126 176 44" role="img" aria-labelledby="dkt-logo dkt-logo-desc" id="svg_logo">
+                            <desc id="dkt-logo-desc">Decathlon logo</desc><path fill="#0082C3" d="M504 126h176v44H504z"></path><path fill="#FFF" d="M534.98 145.82a10.47 10.47 0 0 0-3.3-6.44c-2.48-2.23-5.12-2.7-8.9-2.7h-8.13v22.6h8.93c3.35 0 5.59-.44 8.13-2.8a10.66 10.66 0 0 0 3.28-6.25v9.04h12.94v-4.96h-7.12v-4.1h6.16v-4.87h-6.16v-3.69h7.12v-4.98h-12.94v9.14zm-12.17 8.5h-2.34v-12.78h2.31c4.28 0 6.59 2.3 6.59 6.37 0 4.45-2.1 6.41-6.56 6.41zm43.47-3.75c-.85 1.35-2.71 3.49-5.52 3.45-4.58-.07-6.3-3.23-6.3-6.07a6.06 6.06 0 0 1 5.94-6.07c3.8-.08 6.63 3.57 6.63 3.57l2.97-4.8s-3.36-4.57-9.55-4.43c-9.3.21-12.02 8-12.02 11.62 0 7.62 5.86 11.42 10.65 11.88 6.89.67 10.66-3.84 10.66-3.84l.2-.01a405.38 405.38 0 0 1 5.05.01v3.4h5.6v-22.6h-6.09s-7.49 12.74-8.22 13.88zm8.82.59h-3l3-5.12v5.12zm6.7-9.09h4.53v17.22h5.81v-17.22h4.52v-5.4H581.8m27.86 8.59h-5.98v-8.59h-5.82v22.62h5.82v-8.65h5.98v8.65h5.82v-22.62h-5.82m53.88 0v12.57l-8.74-12.57h-5.26v7.7a11.65 11.65 0 0 0-3-4.81 11.66 11.66 0 0 0-8.2-3.36 11.6 11.6 0 0 0-8.36 3.33 11.33 11.33 0 0 0-3.48 8.22c0 2.48.6 4.66 1.78 6.54h-5.23v-17.61h-5.79v22.61h12.57v-3.02a11.4 11.4 0 0 0 8.47 3.5c3.2 0 6.23-1.24 8.46-3.54a11.4 11.4 0 0 0 2.79-4.7v7.76h5.82v-12.6l8.88 12.6h5.12v-22.61h-5.82zm-25.24 17.47a6.24 6.24 0 0 1-6.03-6.32 6 6 0 0 1 12 0c0 3.7-2.67 6.32-5.97 6.32z"></path></svg>
+                </div>
+                <div id="flag">
+                    <a href="#FR" id="fr" class="lng"><div class="bg-fr"></div></a>
+                    <a href="#EN" id="en" class="lng"><div class="bg-uk"></div></a>
+                    <a href="#ES" id="es" class="lng"><div class="bg-esp"></div></a>
+                    <a href="#DE" id="de" class="lng"><div class="bg-germ"></div></a>
+                    <a href="#POR" id="por" class="lng"><div class="bg-pt"></div></a>
+                    </div>
+            </div>
+            <div id="title"><h1 data-trad="trad_title"></h1></div>
+        </div>
+		<div class="clear"></div>
+		<div id="header_text">
+			<p dir="ltr"><span><div data-trad="trad_intro1" class="blackbold"></div></span><a href="#" id="reduce_intro" class="italic" data-trad="trad_reduce"></a></p>
+			<div id="intro">
+			<p dir="ltr"><span><div data-trad="trad_intro2" ></div></span></p>
+			<p dir="ltr"><span><div data-trad="trad_intro3" ></div></span></p>
+			<p dir="ltr"><span><div data-trad="trad_intro4" ></div></span></p>
+			<p dir="ltr"><span><div data-trad="trad_intro5" ></div></span></p>
+			</div>	
+		</div>
+        <div id="content">
+            <div class="background-image"></div>
+            <div id="data">
+                <div id="device" class="section">
+                    <div class="input_part"><h2  data-trad="trad_device"></h2>
+                        <div>
+                            <div class="question" data-trad="trad_laptop"></div>
+                            <div class="answer"><select id="sel_laptop"></select>
+                                <a href="#" id="device_link" style="display:none;" target="_blank">
+                                        <div class="bg-299638_200"></div></a>
+                            </div>
+							<div class="clear"></div>
+							<div class="question" data-trad="trad_lasting"></div>
+							<div class="answer"><select id="sel_lastingLaptop"><option value="1">1</option><option value="2">2</option><option value="3" selected=selected>3 - Défault</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select> an(s)</div>
+							<div class="tooltip">&nbsp;
+								<span class="tooltiptext" data-trad="trad_tips_lasting"></span>
+							</div>
+                            <div class="clear"></div>
+                            <div class="question" data-trad="trad_screen"></div>
+							<div class="answer"><select id="screen"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></div>
+							<div class="tooltip">&nbsp;
+								<span class="tooltiptext" data-trad="trad_tips_screen"></span>
+							</div>
+                            <div class="clear"></div>
+                            <div class="question" data-trad="trad_phone"></div>
+                            <div class="answer"><select id="phone"><option value="yes">YES</option><option value="no">NO</option></select></div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                    <div class="box"><h3>PRODUCTION</h3><div id="laptop_production"></div><div class="line78">&nbsp;</div></div>
+                    <div class="box"><h3>USE</h3><div id="laptop_use"></div><div class="line78">&nbsp;</div></div>
+                    <div class="box"><h3>TOTAL</h3><div id="laptop_total" class="line24"></div><div class="line24">&nbsp;</div><div id="screen_total" class="line24"></div><div id="phone_total" class="line24"></div></div>
+                    <div class="box"><h3 data-trad="trad_annual"></h3><div id="laptop_impact_annuel" class="bold line24"></div><div class="line24">&nbsp;</div><div  id="screen_total_year" class="bold line24"></div><div id="phone_total_year" class="bold line24"></div></div>
+
+                </div>
+                <div id="cloud" class="section">
+                    <div class="input_part"><h2>CLOUD</h2>
+                        <div>
+                            <div class="question" data-trad="trad_storage"></div>
+							<div class="answer"><input type="number" id="storage_google" min="0"></div>
+							<div class="tooltip">&nbsp;
+								<span class="tooltiptext" data-trad="trad_tips_cloud"></span>
+							</div>
+                            <div class="clear"></div>
+                            <div class="question" data-trad="trad_emails"></div>
+                            <div class="answer"><select id="sel_emails"></select></div>
+                            <div class="clear"></div>
+                            <div><span data-trad="trad_lessstorage" class="trad"></span></div>
+                        </div>
+                    </div>
+                    <div class="nobox"></div>
+                    <div class="box"><h3 data-trad="trad_daily"></h3><div class="line24">&nbsp;</div><div id="impact_email_daily"></div></div>
+                    <div class="doublebox"><h3 data-trad="trad_annual"></h3><div class="bold line24" id="storage_google_year"></div><div  id="impact_email_year" class="bold line24"></div></div>
+				</div>
+                <div id="streaming" class="section">
+                    <div class="input_part"><h2>STREAMING</h2>
+                        <div>
+                            <div class="question" data-trad="trad_streaming"></div>
+							<div class="answer"><select id="sel_stream"><option value="0">0 min</option><option selected value="10">10 min</option><option value="20">20 min</option><option value="30">30 min</option><option value="40">40 min</option><option value="60">1h</option>
+							</select></div>
+							<div class="tooltip">&nbsp;
+								<span class="tooltiptext" data-trad="trad_tips_streaming"></span>
+							</div>
+                        </div>
+                    </div>
+                    <div class="nobox"></div>
+                    <div class="box"><h3 data-trad="trad_daily"></h3><div class="line24" id="impact_stream_daily">&nbsp;</div></div>
+                    <div class="doublebox"><h3 data-trad="trad_annual"></h3><div class="bold line24" id="impact_stream_year"></div></div>
+                </div>
+                <div id="trip" class="section">
+                        <div class="input_part"><h2  data-trad="trad_travel_pro"></h2>
+                            <div>
+                                    <div class="question" data-trad="trad_plane"></div>
+                                    <div class="answer"><input type="number" id="trip_airplane" value="1000" style="width:100px" min="0"></div>
+									<div class="clear"></div>
+									<div class="question" data-trad="trad_train"></div>
+                                    <div class="answer"><input type="number" id="trip_train" value="0" style="width:100px" min="0"></div>
+                                    <div class="clear"></div>
+                            </div>
+                        </div>
+                        <div class="nobox"></div>
+                        <div class="nobox"></div>
+                        <div class="doublebox"><h3 data-trad="trad_annual"></h3><div id="impact_plane_year" class="bold line24"></div><div id="impact_train_year" class="bold line24"></div></div>
+                </div>
+                <div id="work" class="section">
+                        <div class="input_part" style="height:200px"><h2  data-trad="trad_deplacement"></h2>
+                        <div>
+                                <b><div class="question" data-trad="trad_car"></div></b>
+                                <div class="answer"><input type="number" id="trip_car" value="30" style="width:50px" min="0"></div>
+                                <div class="clear"></div>
+                                <div class="question" data-trad="trad_car_percent"></div>
+                                <div class="answer"><input type="number" id="pourcent_car" value="100" style="width:50px" class="percent" min="0" max="100">%</div>
+                                <div class="clear"></div>
+                                <b><div class="question" data-trad="trad_commun"></div></b>
+                                <div class="answer"><input type="number" id="trip_public_transport" style="width:50px" min="0"></div>
+                                <div class="clear"></div>
+                                <div class="question" data-trad="trad_commun_percent"></div>
+                                <div class="answer"><input type="number" id="percent_public_transport" style="width:50px" class="percent" min="0" max="100">%</div>
+                                <div class="clear"></div>
+                                <b><div class="question" data-trad="trad_bike"></div></b>
+								<div class="answer"><input type="number" id="deplacement_soft" style="width:50px" min="0"></div>
+								<div class="tooltip">&nbsp;
+									<span class="tooltiptext" data-trad="trad_trip_soft"></span>
+								</div>
+                                <div class="clear"></div>
+                                <div class="question" data-trad="trad_bike_percent"></div>
+                                <div class="answer"><input type="number" id="percent_bike" style="width:50px" class="percent" min="0" max="100">%</div>
+                                <div class="clear"></div>
+                        </div>
+                    </div>
+                    <div class="nobox"></div>
+                    <div class="box"  style="height:200px"><h3 data-trad="trad_daily"></h3><div class="line24" id="impact_car_daily"></div><div class="line24">&nbsp;</div><div class="line24" id="impact_public_transport_daily"></div><div class="line24">&nbsp;</div><div class="line24" id="impact_bike_daily"></div></div>
+                    <div class="doublebox" style="height:200px"><h3 data-trad="trad_annual"></h3><div class="bold line24" id="impact_car_year"></div><div class="bold ">&nbsp;</div><div class="bold line24" id="impact_public_transport_year"></div><div class="line24">&nbsp;</div><div class="bold line24" id="impact_bike_year"></div></div>                        
+
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div id="footer">
+            <div style="margin-top:20px;padding-left:100px">
+                <div class="bg-total_pre"></div>
+                <div class="div_subtotal"><h3 data-trad="trad_numeric_impact" class="trad"></h3>
+                    <div id="total_impact_digital" class="subtotal"></div>KG eq CO2
+                </div>
+                <div class="bg-total_post"></div>
+                <div class="betweensubtotal"></div>
+                <div class="bg-total_pre"></div>
+                <div class="div_subtotal"><h3 data-trad="trad_moving" class="trad"></h3>
+                    <div id="total_impact_trip" class="subtotal"></div>KG eq CO2
+                </div>
+                <div class="bg-total_post"></div>
+            </div>
+            <div class="clear"></div>
+            <div style="margin-top:20px;padding-left:320px;">
+                <div class="bg-total_pre"></div>
+                    <div class="div_subtotal div_total"><h3 data-trad="trad_global" class="trad "></h3>
+                        <div id="total_impact" class="subtotal total"></div>KG eq CO2
+                    </div>
+                    <div class="bg-total_post"></div>
+			</div>
+			<div class="clear"></div>
+			<!--<div class="bloc_graph">
+					<div class="barre barreEco"></div>
+					<div id="barre_eco_G" class="barre barreEco barre_eco_G" style="left: 10%; width: 80%;"></div>
+					<div id="barre_eco_F" class="barre barreEco barre_eco_F" style="left: 10%; width: 76%;"></div>
+					<div id="barre_eco_E" class="barre barreEco barre_eco_E" style="left: 10%; width: 64%;"></div>
+					<div id="barre_eco_D" class="barre barreEco barre_eco_D" style="left: 10%; width: 52%;"></div>
+					<div id="barre_eco_C" class="barre barreEco barre_eco_C" style="left: 10%; width: 40%;"></div>
+					<div id="barre_eco_B" class="barre barreEco barre_eco_B" style="left: 10%; width: 28%;"></div>
+					<div id="barre_eco_A" class="barre barreEco barre_eco_A" style="left: 10%; width: 20%;"></div>
+					<div id="lab_eco_moy" class="lab labMoyenne labelHaut" style="left: 40%;"></div>
+				  </div>
+				-->
+            <div class="clear"></div>
+            <div style="margin-top:20px;">
+                <div class="div_equiv">
+                    <div class="div_image">
+						<div class="bg-tree"></div>
+                    </div>
+                    <div class="bg-total_pre"></div>
+                    <div class="div_subtotal div_equivtotal"><h3 data-trad="trad_tree" class="trad"></h3>
+                        <span id="nb_tree" class="subtotal"></span>
+                    </div>
+                    <div class="bg-total_post"></div>
+                </div>
+                <div class="div_equiv">
+                    <div class="div_image">
+						<div class="bg-lightpng"></div>
+                    </div>
+                    <div class="bg-total_pre"></div>
+                    <div class="div_subtotal div_equivtotal"><h3 data-trad="trad_bulb" class="trad"></h3>
+                        <span id="nb_bulb" class="subtotal"></span> <span class="trad" data-trad="trad_year"></span>
+                    </div>
+                    <div class="bg-total_post"></div>
+                </div>
+                <div class="div_equiv">
+                    <div class="div_image">
+                        <div class="bg-jacket"></div>
+                    </div>
+                    <div class="bg-total_pre"></div>
+                    <div class="div_subtotal div_equivtotal"><h3 data-trad="trad_forclaz" class="trad"></h3>
+                        <span id="nb_fleece" class="subtotal"></span> 
+                    </div>
+                    <div class="bg-total_post"></div>
+                </div>
+            </div>
+           
+        </div>
+    </div>
+	<div class="clear"></div>
+	<div  id="detail_source"><a href="#">Détail des sources</a></div>
+	<div class="co2_explaination hide">
+		<ul>
+			<li class="li_col"><b><a href="https://www.ademe.fr" target="_blank">ADEME</a> Base Carbone V11.5</b>
+				<ul>
+					<li data-trad="trad_sources1"></li>
+					<li data-trad="trad_sources2"></li>
+					<li data-trad="trad_sources3"></li>
+					<li data-trad="trad_sources4"></li>
+					<li data-trad="trad_sources5"></li>
+					<li data-trad="trad_sources6"></li>
+				</ul>
+			</li>
+			<li class="li_col">
+				<b><a href="https://www.greenit.fr" target="_blank">GreenIT.fr</a></b>
+				<ul>
+					<li data-trad="trad_sources7"></li>
+				</ul>
+			</li>
+			<li class="li_col">
+				<b><a href="https://theshiftproject.org" target="_blank">TheShiftProject</a></b>
+				<ul>
+					<li data-trad="trad_sources8"></li>
+				</ul>
+			</li>
+			<li class="li_col">
+				<b data-trad="trad_sources9"></b>
+				<ul>
+					<li data-trad="trad_sources10"></li>
+					<li data-trad="trad_sources11"></li>
+					<li data-trad="trad_sources12"></li>
+					<li data-trad="trad_sources13"></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+	<div class="tableauImpact">
+		<h3 data-trad="trad_empreinte_page"></h3>
+
+		<div class="ges ges2">1.42 gCO2e</div>
+		<div class="ges ges4">2.13 cl eau</div>
+	</div>
+	<div style="text-align:center;font-style: italic;font-size:10px;">2018 - Decathlon - julien.gontier@decathlon.com</div>
+
+
+    <script>	
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-130599342-2', 'auto');
+	ga('send', 'pageview');
+	</script>
+    
+</body>
+</html>
