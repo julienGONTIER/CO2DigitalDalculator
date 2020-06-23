@@ -8,7 +8,7 @@ The objective is of course to combine it with concrete actions (extending the li
 The calculator is based on the databases provided by ADEME as well as data from GreenIT.fr.
 
 
-![Calculator Preview](https://github.com/dktunited/greenit-calculator/blob/master/appPreview/calculatorPreview.PNG)
+![Calculator Preview](https://github.com/julienGONTIER/CO2DigitalDalculator/blob/master/appPreview/calculatorPreview.PNG?raw=true)
 
 
 # Emission factors
