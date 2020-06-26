@@ -5,20 +5,41 @@
 <meta http-equiv="expires" content="Sun, 04 May 2020 00:00:01 GMT"/>
 <title>Mon Impact Environnemental numérique (en kg eq CO2)</title>
 <link rel="shortcut icon" href="favicon.gif?v1.0">
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
-<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
+<script src="./js/jquery-3.4.1.slim.min.js"></script>
+<link href="./css/font_min.css" rel="stylesheet">
 <script async="" src="https://www.google-analytics.com/analytics.js"></script>
-<script src="./js/script.js"></script>
-<script src="./js/database.js"></script>
-<link rel="stylesheet" href="./css/style.css">
 <!--
 	CO2 Calculator by Decathlon - Julien Gontier - 2020
 	CO2 calculator of digital impact on entreprise
-	This calculator integrate CSS and JS to give the opportunity to host it on a wordpress page.
 	Images are hosted in a css sprite to avoid http transfer
 	Jquery is used to make the code easy to read (just the slim js file)
 	External Font is not mandatory
 -->
+<script>
+var b_Prod =0;
+function loadjscssfile(filename, filetype){
+    if (filetype=="js"){ //if filename is a external JavaScript file
+        var fileref=document.createElement('script');
+        fileref.setAttribute("type","text/javascript");
+        fileref.setAttribute("src", filename);
+    }
+    else if (filetype=="css"){ //if filename is an external CSS file
+        var fileref=document.createElement("link");
+        fileref.setAttribute("rel", "stylesheet");
+        fileref.setAttribute("type", "text/css");
+        fileref.setAttribute("href", filename);
+    }
+    if (typeof fileref!="undefined")
+        document.getElementsByTagName("head")[0].appendChild(fileref);
+}
+var isMin ="";
+if (b_Prod==1){
+    isMin = "_min"
+}
+loadjscssfile("./js/script" + isMin + ".js", "js");
+loadjscssfile("./js/database" + isMin + ".js", "js");
+loadjscssfile("./css/style" + isMin + ".css", "css");
+</script>
   
 </head>
 <body>
@@ -59,8 +80,9 @@
                             <div class="answer"><select id="sel_laptop"></select>
                                 <a href="#" id="device_link" style="display:none;" target="_blank">
                                         <div class="bg-anchor"></div></a>
-                                <img title="epeat" id="epeat" class="hide">
-                                <img title="TCO" id="tco" class="hide">
+                                        <div title="Label TCO" id="tco" class="hide label"></div>
+                                        <div title="Label Epeat" id="epeat" class="hide label"></div>
+                                
                             </div>
 							<div class="clear"></div>
 							<div class="question" data-trad="trad_lasting"></div>

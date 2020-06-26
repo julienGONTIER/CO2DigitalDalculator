@@ -31,8 +31,8 @@ h3{font-size: 18px;font-weight: bold; font-style: italic }
 .nobox{float:left;padding-bottom: 20px;width:100px;margin-bottom:20px;margin-right:20px; text-align:center;}
 .line24{height: 24px;}
 .line78{height: 78px;}
-.question{float: left; width: 60%; color:#4D4D4D;border-bottom: 1px dashed #eee;}
-.answer{float: left;color:#4D4D4D; width:30%}
+.question{float: left; width: 55%; color:#4D4D4D;border-bottom: 1px dashed #eee;}
+.answer{float: left;color:#4D4D4D; width:40%;text-align: left;}
 .div_subtotal{float:left;width:437px;height:150px;font-weight: bold; text-align: center;background-color: #D8D7DC; }
 .subtotal{font-size: 50px;font-weight: bold;}
 .subtotal h3{font-size:40px;padding-bottom:5px;}
@@ -68,7 +68,9 @@ div.barre{border-radius:10px;position:absolute;width:80%;right:10%;left:10%;marg
 .bg-germ {width: 33px;height: 20px;float:left;padding-right:10px;background: url('../Images/css_sprites.png') -174px -10px;}
 .bg-jacket {width: 40px;height: 54px;background: url('../Images/css_sprites.png') -108px -130px;}
 .bg-lightpng {width: 40px;height: 46px;background: url('../Images/css_sprites.png') -108px -70px;}
-.bg-299638_200 {width: 15px;height: 15px;float: right;background: url('../Images/css_sprites.png') -227px -50px;}
+.bg-anchor {width: 15px;height: 15px;float: right;background: url('../Images/css_sprites.png') -227px -50px;}
+#epeat{height: 34px;width:50px;float:right;}
+#tco{height: 34px;width:50px;float:right;background: url('../Images/tco_label.png')}
 /*Tooltip*/
 /* Tooltip container */
 .tooltip {color:#4D4D4D; width:20px;background: url('../Images/bulb.png');position: relative;display: inline-block;border-bottom: 1px dotted black; text-decoration: none;}

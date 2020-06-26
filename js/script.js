@@ -130,10 +130,27 @@
 					$("#device_link").attr("href", laptop[0].link);
 					$("#device_link").css("display", "inline");
 				}
-				$("#epeat").attr("src", "").hide();
-				if (TCO = "YES")
-				{
-					$("#epeat").attr("src", EpeatSite).show();
+				$("#tco").hide();
+				$("#epeat").hide();
+				if (TCO == "YES"){
+					$("#tco").html("").show();
+					$("#tco").append("<img src='./Images/tco_label.png' title='Label TCO' alt='Label TCO' class=''>");
+				}
+				if (EPeat != ""){
+					$("#epeat").html("").show();
+					switch (EPeat){
+						case 'Gold':
+							$("#epeat").append("<img src='./Images/epeat_label_gold.png' title='Epeat Gold' alt='Epeat Gold' class=''>");
+							break;
+						case 'Silver':
+							$("#epeat").append("<img src='./Images/epeat_label_silver.png' title='Epeat Gold' alt='Epeat Silver' class=''>");
+							break;
+						case 'Bronze':
+						default:
+							$("#epeat").append("<img src='./Images/epeat_label_bronze.png' title='Epeat Bronze' alt='Epeat Bronze' class=''>");
+							break;
+						break;
+					}
 				}
 				RefreshTotal();
 			}
