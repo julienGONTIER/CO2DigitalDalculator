@@ -21,8 +21,8 @@ The calculator is based on the databases provided by ADEME as well as data from 
 - Conso moyenne kg CO2 : European = 9000 / French = 12000;
 
 # TODO
-- Validatate Streaming Impact and have the value by minutes instead of hours
-- JS and CSS minify -> for realease only
+~~- Validatate Streaming Impact and have the value by minutes instead of hours~~
+~~- JS and CSS minify -> for realease only~~
 - Add more computers in the list and group by type
 - Cloud Impact for other providers than Google
 - Save result to have a team data -> change techno?
