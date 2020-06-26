@@ -23,8 +23,9 @@ The calculator is based on the databases provided by ADEME as well as data from 
 # TODO
 ~~- Validatate Streaming Impact and have the value by minutes instead of hours~~
 ~~- JS and CSS minify -> for realease only~~
-- Add more computers in the list and group by type
+~~- Add more computers in the list and group by type~~
 - Cloud Impact for other providers than Google
 - Save result to have a team data -> change techno?
 - Best practices for each line
 - Background position
+- Host PDF files for easy access (avoid broken links)
