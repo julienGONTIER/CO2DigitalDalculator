@@ -8,7 +8,7 @@ The objective is of course to combine it with concrete actions (extending the li
 The calculator is based on the databases provided by ADEME as well as data from GreenIT.fr.
 
 
-![Calculator Preview](https://github.com/dktunited/greenit-calculator/blob/master/appPreview/calculatorPreview.PNG)
+![Calculator Preview](https://github.com/julienGONTIER/CO2DigitalDalculator/blob/master/appPreview/calculatorPreview.PNG?raw=true)
 
 
 # Emission factors
@@ -21,10 +21,11 @@ The calculator is based on the databases provided by ADEME as well as data from 
 - Conso moyenne kg CO2 : European = 9000 / French = 12000;
 
 # TODO
-- Validatate Streaming Impact and have the value by minutes instead of hours
-- JS and CSS minify -> for realease only
-- Add more computers in the list and group by type
+~~- Validatate Streaming Impact and have the value by minutes instead of hours~~
+~~- JS and CSS minify -> for realease only~~
+~~- Add more computers in the list and group by type~~
 - Cloud Impact for other providers than Google
 - Save result to have a team data -> change techno?
 - Best practices for each line
 - Background position
+- Host PDF files for easy access (avoid broken links)
