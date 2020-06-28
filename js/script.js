@@ -7,7 +7,8 @@
 		var TCOSite = "https://tcocertified.com/";
 		var EpeatSite = "https://epeat.net";
 		
-		var working_days = 215;
+		var working_days_company = 215;
+		var nb_week = 52;
 		//330g CO2/Giga /USA
 		var CO2GigaByteCloud = 0.330; // Fred Bordage Green IT
 		//253g/km 
@@ -29,6 +30,8 @@
 		var CO2TreeYear = 20;
 		//CO2 Fleece: 11kg CO2 // LCA Decathlon
 		var CO2Fleece = 11;
+		//CO2 Emission Avoid by working from home - For Europe: -4,9kg CO2eq in summer and -3,1kg CO2eq in winter avoided - get medium (4 kg CO2eq)
+		var CO2VisioAvoided = 4;
 
 
 		$(document).ready(function(){
@@ -37,6 +40,9 @@
 			var brands = getBrands();
 			populateDevice($("#sel_laptop"), device);
 			populate($("#sel_emails"), impactEmails);
+			populate($("#pourcent_car"), percentage, 100);
+			populate($("#percent_public_transport"), percentage);
+			populate($("#percent_bike"), percentage);
 			
 			function populateDevice(select, jsonvar){
 				var brands = "";
@@ -55,10 +61,13 @@
 				});
 			}
 
-			function populate(select, jsonvar){
+			function populate(select, jsonvar, selectedvar = 0){
 				$.each(jsonvar,function(key, value) 
 				{
-					select.append('<option value=' + value.key + '>' + value.name + '</option>');
+					var selected = "";
+					if (value.key == selectedvar)
+						selected = "selected";
+					select.append('<option value=' + value.key + ' ' + selected  + '>' + value.name + '</option>');
 				});
 			}
 
@@ -89,10 +98,13 @@
 			}
 			
 			function RefreshTotal(){
-				total_CO2_digital = Number($("#laptop_impact_annuel").html()) + Number($("#screen_total_year").html()) + Number($("#phone_total_year").html()) + Number($("#storage_google_year").html()) + Number($("#impact_email_year").html()) + Number($("#impact_stream_year").html());
+				total_CO2_digital = Number($("#laptop_impact_annuel").html()) + Number($("#screen_total_year").html()) + Number($("#phone_total_year").html()) + Number($("#storage_google_year").html()) + Number($("#impact_email_year").html()) + Number($("#impact_stream_year").html()) ;
 				
-				total_CO2_travel = Number($("#impact_car_year").html()) + Number($("#impact_public_transport_year").html()) + Number($("#impact_plane_year").html()) + Number($("#impact_train_year").html());
-				
+				total_CO2_travel = Number($("#impact_car_year").html()) + Number($("#impact_public_transport_year").html()) + Number($("#impact_plane_year").html()) + Number($("#impact_train_year").html()) + Number($("#impact_homework_year").html());
+				//When Visio decrease more than work trip
+				if (total_CO2_travel<0)
+					total_CO2_travel = 0
+
 				total_CO2 = total_CO2_digital + total_CO2_travel;
 				
 				$("#total_impact_digital").html(total_CO2_digital.toFixed(2));
@@ -134,20 +146,20 @@
 				$("#epeat").hide();
 				if (TCO == "YES"){
 					$("#tco").html("").show();
-					$("#tco").append("<img src='./Images/tco_label.png' title='Label TCO' alt='Label TCO' class=''>");
+					$("#tco").append("<a href='" + TCOSite + "' alt='TCO Website' target='_blank'><img src='./Images/tco_label.png' title='Label TCO' alt='Label TCO' class=''></a>");
 				}
 				if (EPeat != ""){
 					$("#epeat").html("").show();
 					switch (EPeat){
 						case 'Gold':
-							$("#epeat").append("<img src='./Images/epeat_label_gold.png' title='Epeat Gold' alt='Epeat Gold' class=''>");
+							$("#epeat").append("<a href='" + EpeatSite + "' alt='EPEAT Website' target='_blank'><img src='./Images/epeat_label_gold.png' title='Epeat Gold' alt='Epeat Gold' class=''></a>");
 							break;
 						case 'Silver':
-							$("#epeat").append("<img src='./Images/epeat_label_silver.png' title='Epeat Gold' alt='Epeat Silver' class=''>");
+							$("#epeat").append("<a href='" + EpeatSite + "' alt='EPEAT Website' target='_blank'><img src='./Images/epeat_label_silver.png' title='Epeat Gold' alt='Epeat Silver' class=''></a>");
 							break;
 						case 'Bronze':
 						default:
-							$("#epeat").append("<img src='./Images/epeat_label_bronze.png' title='Epeat Bronze' alt='Epeat Bronze' class=''>");
+							$("#epeat").append("<a href='" + EpeatSite + "' alt='EPEAT Website' target='_blank'><img src='./Images/epeat_label_bronze.png' title='Epeat Bronze' alt='Epeat Bronze' class=''></a>");
 							break;
 						break;
 					}
@@ -202,7 +214,7 @@
 					});
 				if ($(sel_emails).val() != ""){
 					$("#impact_email_daily").html(impactdaily[0].total);
-					$("#impact_email_year").html(impactdaily[0].total * working_days);
+					$("#impact_email_year").html(impactdaily[0].total * working_days_company);
 				}
 				else{
 					$("#impact_email_daily").html("0");
@@ -215,7 +227,7 @@
 			$("#sel_stream").change(function(){
 				if ($("#sel_stream").val() != ""){
 					$("#impact_stream_daily").html(Number($("#sel_stream").val() * CO2streaming).toFixed(0));
-					$("#impact_stream_year").html(Number($("#sel_stream").val() * CO2streaming  * working_days).toFixed(0));
+					$("#impact_stream_year").html(Number($("#sel_stream").val() * CO2streaming  * working_days_company).toFixed(0));
 				}
 				else{
 					$("#impact_stream_daily").html("0");
@@ -252,7 +264,7 @@
 					var impactQuotidien = Number($("#trip_car").val() * CO2kmcar).toFixed(2);
 					var pourcent = $("#pourcent_car").val();
 					$("#impact_car_daily").html(impactQuotidien);
-					$("#impact_car_year").html(Number(impactQuotidien * working_days * (pourcent/ 100)).toFixed(2) );
+					$("#impact_car_year").html(Number(impactQuotidien * working_days_company * (pourcent/ 100)).toFixed(2) );
 				}
 				else{
 					$("#impact_car_daily").html("0");
@@ -268,6 +280,26 @@
 				$("#trip_car").change();
 				CheckPercent();
 			});
+
+			$("#day_homework_by_week").change(function(){
+				var nb_dayHomeWordk = $("#day_homework_by_week").val();
+				$("#impact_homework_daily").html(- CO2VisioAvoided * nb_dayHomeWordk);
+				$("#impact_homework_year").html(- CO2VisioAvoided * nb_dayHomeWordk * nb_week);
+				ChangeWorkingDays();
+				RefreshTotal();
+			});
+
+			function ChangeWorkingDays()
+			{
+				working_days_company = 215
+				var nb_dayHomeWordk = $("#day_homework_by_week").val();
+				working_days_company = working_days_company - (nb_dayHomeWordk * nb_week);
+				if(working_days_company <0)
+					working_days_company =0;
+				$("#trip_car").change()
+				$("#trip_train").change()
+				$("#trip_public_transport").change()
+			}
 			
 			$("#pourcent_car").click(function(){$("#pourcent_car").change()});
 			
@@ -276,7 +308,7 @@
 					var impactQuotidien = Number($("#trip_public_transport").val() * CO2kmtrainBus).toFixed(2);
 					var pourcent = $("#percent_public_transport").val();
 					$("#impact_public_transport_daily").html(impactQuotidien);
-					$("#impact_public_transport_year").html(Number(impactQuotidien * working_days * (pourcent/ 100)).toFixed(2) );
+					$("#impact_public_transport_year").html(Number(impactQuotidien * working_days_company * (pourcent/ 100)).toFixed(2) );
 				}
 				else{
 					$("#impact_public_transport_daily").html("0");
@@ -305,6 +337,8 @@
                 
 				CheckPercent();
 			});
+
+			
 			
 			function CheckPercent()
 			{

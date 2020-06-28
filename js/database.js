@@ -9,7 +9,7 @@ var translation = {
 'trad_phone':{'en':'Do I have a phone?','fr':'Ai je un téléphone?','por':'Tenho telemovel?','es':'¿Tengo un celular?','de':'Habe ich ein Telefon?'},
 'trad_storage':{'en':'My Google Storage in Gb<a target=\"_blank\" href=\"https://drive.google.com/settings/storage\">(how to find it)</a>','fr':'Mon stockage Google en GB <a target=\"_blank\" href=\"https://drive.google.com/settings/storage\">(le calculer)</a>','por':'O meu armazenamento Google em GB <a target=\"_blank\" href=\"https://drive.google.com/settings/storage\">(Calcular)</a>','es':'Mi almacenamiento Google en GB <a target=\"_blank\" href=\"https://drive.google.com/settings/storage\">(Cómo calcularlo)</a>','de':'Mein Google-Speicher in GB <a target=\"_blank\" href=\"https://drive.google.com/settings/storage\"> (So finden Sie es) </a>'},
 'trad_emails':{'en':'Number of emails sent per day','fr':'Nombre d&#39;emails envoyés par jour','por':'N.º de emails enviado por dia','es':'Número de correos enviados por día','de':'Anzahl der E-Mails, die pro Tag gesendet werden'},
-'trad_deplacement':{'en':'WORK TRIP','fr':'TRAJET TRAVAIL','por':'Viagem para o trabalho','es':'Viaje para ir al trabajo','de':'Dienstreise'},
+'trad_deplacement':{'en':'WORK TRIP - VISIO','fr':'TRAJET TRAVAIL - VISIO','por':'Viagem para o trabalho','es':'Viaje para ir al trabajo','de':'Dienstreise'},
 'trad_travel_pro':{'en':'BUSINESS TRIPS','fr':'TRAJETS PRO','por':'Viagens de negócios','es':'Viajes de negocios','de':'Geschäftsreisen'},
 'trad_plane':{'en':'Number of kilometres travelled by airplane (<a target=\"_blank\" href=\"https://fr.distance.to\">caculate it</a>)','fr':'Nombre de kilomètres parcouru en avion (<a target=\"_blank\" href=\"https://fr.distance.to\">le calculer</a>)','por':'Número de quilómetros percorrido por avião (<a target=\"_blank\" href=\"https://fr.distance.to\">Calcular</a>)','es':'Número de kilómetros recorridos en avión (<a target=\"_blank\" href=\"https://fr.distance.to\">Calcular</a>)','de':'Anzahl der Kilometer, die mit dem Flugzeug zurückgelegt wurden. (<a target=\"_blank\" href=\"https://fr.distance.to\"> berechnen Sie es </a>)'},
 'trad_train':{'en':'Number of kilometres travelled by train','fr':'Nombre de kilimètres parcourus en train','por':'','es':'','de':''},
@@ -58,6 +58,7 @@ var translation = {
 'trad_sources11':{'en':'Tree compensation: 20kg CO2eq /year','fr':'Compensation arbre: 20kg CO2eq /an','por':'','es':'','de':''},
 'trad_sources12':{'en':'Polar :11kg CO2eq (LCA product)','fr':'Polaire :11kg CO2eq (ACV produit)','por':'','es':'','de':''},
 'trad_sources13':{'en':'Lamp on: 19g CO2eq / hour','fr':'Lampe allumée: 19g CO2eq / heure','por':'','es':'','de':''},
+'trad_homework':{'en':'Number of day per week in home work','fr':'Nombre de jour par semaine en télétravail','por':'','es':'','de':''},
 /*END TRAD*/
 };
 var device = [
@@ -99,3 +100,4 @@ var device = [
 var phone = [{'name':'Autre telephone','total':'45.92','use:':'0.18','production':'56','lasting':'3','class':''}];
 var ecran = [{'name':'Ecran','total':'617','use:':'0.53','production':'290','lasting':'4','class':''}];
 var impactEmails = [{'key':'E1','name':'0 -> 10 ','total':0.15},{'key':'E2','name':'10 -> 20','total':0.3},	{'key':'E3','name':'20 -> 40','total':0.6},	{'key':'E4','name':'+ 40','total':1.05},];
+var percentage = [{'key':'0', name :'0%'},{'key':'10', name :'10%'},{'key': '20', name :'20%'},{'key': '30', name :'30%'},{'key': '40', name :'40%'},{'key': '50', name :'50%'},{'key': '60', name :'60%'},{'key': '70', name :'70%'},{'key': '80', name :'80%'},{'key': '90', name :'90%'},{'key': '100', name: '100%'}];
