@@ -7,8 +7,9 @@
 		var TCOSite = "https://tcocertified.com/";
 		var EpeatSite = "https://epeat.net";
 		
+		var working_days_company_init = 215;
 		var working_days_company = 215;
-		var nb_week = 52;
+		var nb_working_week = 47;
 		//330g CO2/Giga /USA
 		var CO2GigaByteCloud = 0.330; // Fred Bordage Green IT
 		//253g/km 
@@ -30,8 +31,8 @@
 		var CO2TreeYear = 20;
 		//CO2 Fleece: 11kg CO2 // LCA Decathlon
 		var CO2Fleece = 11;
-		//CO2 Emission Avoid by working from home - For Europe: -4,9kg CO2eq in summer and -3,1kg CO2eq in winter avoided - get medium (4 kg CO2eq)
-		var CO2VisioAvoided = 4;
+		//CO2 Emission Avoid by working from home - For Europe: +7.6kg (transport)-4,9kg CO2eq in summer and +7.6kg (transport)-3,1kg CO2eq in winter avoided - get medium (3,6 kg CO2eq)
+		var CO2Visio = 3.6;
 
 
 		$(document).ready(function(){
@@ -61,7 +62,7 @@
 				});
 			}
 
-			function populate(select, jsonvar, selectedvar = 0){
+			function populate(select, jsonvar, selectedvar){
 				$.each(jsonvar,function(key, value) 
 				{
 					var selected = "";
@@ -98,9 +99,9 @@
 			}
 			
 			function RefreshTotal(){
-				total_CO2_digital = Number($("#laptop_impact_annuel").html()) + Number($("#screen_total_year").html()) + Number($("#phone_total_year").html()) + Number($("#storage_google_year").html()) + Number($("#impact_email_year").html()) + Number($("#impact_stream_year").html()) ;
+				total_CO2_digital = Number($("#laptop_impact_annuel").html()) + Number($("#screen_total_year").html()) + Number($("#phone_total_year").html()) + Number($("#storage_google_year").html()) + Number($("#impact_email_year").html()) + Number($("#impact_stream_year").html()) + Number($("#impact_homework_year").html());
 				
-				total_CO2_travel = Number($("#impact_car_year").html()) + Number($("#impact_public_transport_year").html()) + Number($("#impact_plane_year").html()) + Number($("#impact_train_year").html()) + Number($("#impact_homework_year").html());
+				total_CO2_travel = Number($("#impact_car_year").html()) + Number($("#impact_public_transport_year").html()) + Number($("#impact_plane_year").html()) + Number($("#impact_train_year").html()) ;
 				//When Visio decrease more than work trip
 				if (total_CO2_travel<0)
 					total_CO2_travel = 0
@@ -283,17 +284,18 @@
 
 			$("#day_homework_by_week").change(function(){
 				var nb_dayHomeWordk = $("#day_homework_by_week").val();
-				$("#impact_homework_daily").html(- CO2VisioAvoided * nb_dayHomeWordk);
-				$("#impact_homework_year").html(- CO2VisioAvoided * nb_dayHomeWordk * nb_week);
+				$("#impact_homework_daily").html(CO2Visio);
+				$("#impact_homework_year").html(Number(CO2Visio * nb_dayHomeWordk * nb_working_week).toFixed(2));
 				ChangeWorkingDays();
 				RefreshTotal();
 			});
 
 			function ChangeWorkingDays()
 			{
-				working_days_company = 215
+				working_days_company = working_days_company_init
 				var nb_dayHomeWordk = $("#day_homework_by_week").val();
-				working_days_company = working_days_company - (nb_dayHomeWordk * nb_week);
+				working_days_company = working_days_company - (nb_dayHomeWordk * nb_working_week);
+				//Add this line because working days by week does not include holidays while working days yes
 				if(working_days_company <0)
 					working_days_company =0;
 				$("#trip_car").change()

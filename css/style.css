@@ -25,7 +25,7 @@ h3{font-size: 18px;font-weight: bold; font-style: italic }
 #data{ position: relative; left: 0; right: 0; z-index: 9999;  width: 1250px;  margin:auto;}
 .section{width: 100%;padding-top:10px;}
 .calculate_part{width: 40%;}
-.input_part{float:left;padding-bottom: 20px;padding-left:20px;margin:0px 20px 20px 0;width: 720px;background-color: #D7D6DC;font-size:16px;}
+.input_part{float:left;padding-bottom: 20px;padding-left:20px;margin:0px 20px 10px 0;width: 720px;background-color: #D7D6DC;font-size:16px;}
 .box{float:left;padding-bottom: 20px;width:100px;margin-bottom:20px;margin-right:20px;background-color:#4D4D4D; text-align:center;color: #FEFEFE;}
 .doublebox{float:left;padding-bottom: 20px;width:220px;margin-bottom:20px;margin-right:20px;background-color:#4D4D4D; text-align:center;color: #FEFEFE;}
 .nobox{float:left;padding-bottom: 20px;width:100px;margin-bottom:20px;margin-right:20px; text-align:center;}
